@@ -15,6 +15,8 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--input_dir', type = str, default='re_data')
 parser.add_argument('--output_dir', type = str, default='re_dist')
+parser.add_argument('--type', type=str, default='date_of_birth')
+#parser.add_argument('--type', type=str, default='part_of')
 
 args = parser.parse_args()
 input_dir = os.path.join(os.getcwd(), 'DocRED', args.input_dir)
@@ -34,7 +36,7 @@ def find_pair_min_dist(ent1, ent2):
         for idx2, m2 in enumerate(ent2):
             cur_dist = abs(m1['sent_id'] - m2['sent_id'])
             dist = min(dist, cur_dist)
-    return dist != 0
+    return int(dist != 0)
 
 cnt = 0
 part_of_data = []
@@ -64,8 +66,8 @@ f.write('\t'.join(list) + '\n')
 distList = []
 numberList = []
 for item in sorted_re_dist:
-    print("\t{}   \t   {}   \t   {:.4f}".format(item[0], item[1], item[1] / cnt * 100))
-    f.write("\t{}   \t   {}\t   {:.4f}\n".format(item[0], item[1], item[1] / cnt * 100))
+    #print("\t{}   \t   {}   \t   {:.4f}".format(item[0], item[1], item[1] / cnt * 100))
+    #f.write("\t{}   \t   {}\t   {:.4f}\n".format(item[0], item[1], item[1] / cnt * 100))
     distList.append(item[0])
     numberList.append(item[1])
 

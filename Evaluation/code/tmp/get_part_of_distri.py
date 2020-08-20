@@ -36,7 +36,7 @@ def find_pair_min_dist(ent1, ent2):
         for idx2, m2 in enumerate(ent2):
             cur_dist = abs(m1['sent_id'] - m2['sent_id'])
             dist = min(dist, cur_dist)
-    return dist != 0
+    return int(dist != 0)
 
 cnt = 0
 part_of_data = []
@@ -53,12 +53,6 @@ for x in re_data:
             cnt += 1
             part_of_data.append(x)
             dist = find_pair_min_dist(vertexSet[h_idx], vertexSet[t_idx])
-            if dist == 0:
-                cnt_1 += 1
-                if cnt_1 == 20:
-                    print(x['sents'][evi_sents[0]])
-                    print(x)
-                    sys.exit()
             if dist not in re_dist:
                 re_dist[dist] = 1
             else:
@@ -73,8 +67,8 @@ f.write('\t'.join(list) + '\n')
 distList = []
 numberList = []
 for item in sorted_re_dist:
-    print("\t{}   \t   {}   \t   {:.4f}".format(item[0], item[1], item[1] / cnt * 100))
-    f.write("\t{}   \t   {}\t   {:.4f}\n".format(item[0], item[1], item[1] / cnt * 100))
+    #print("\t{}   \t   {}   \t   {:.4f}".format(item[0], item[1], item[1] / cnt * 100))
+    #f.write("\t{}   \t   {}\t   {:.4f}\n".format(item[0], item[1], item[1] / cnt * 100))
     distList.append(item[0])
     numberList.append(item[1])
 

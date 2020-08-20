@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 ###############################################################
-Usage: Evaluate the performance versus different entity-pair distances.
+Usage: F1-score versus different relation distances.
 
 Run the script:
 python3 eval_re_dist.py --data DocRED/Dialogue
@@ -87,7 +87,7 @@ top_re_dist = OrderedDict()
 for key, value in sorted(re_dist_cnt.items()):
     top_re_dist[key] = value
 
-prediction_file = os.path.join(input_dir, "test_index.json")
+prediction_file = os.path.join(input_dir, "dev_test_index.json")
 tmp = json.load(open(prediction_file))
 tmp.sort(key=lambda x: (x['title'], x['h_idx'], x['t_idx'], x['r']))
 prediction_re = [tmp[0]]

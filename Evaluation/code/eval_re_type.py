@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 ###############################################################
-Usage: Evaluate the performance versus different relation types.
+Usage: F1-score versus different relation types.
 
 Run the script:
 python3 eval_re_type.py --data DocRED/Dialogue
@@ -80,7 +80,7 @@ top_re_type = []
 for key, value in sorted(re_type_cnt.items(), key=lambda kv: kv[1], reverse=True):
     top_re_type.append(key)
 
-prediction_file = os.path.join(input_dir, "test_index.json")
+prediction_file = os.path.join(input_dir, "dev_test_index.json")
 tmp = json.load(open(prediction_file))
 tmp.sort(key=lambda x: (x['title'], x['h_idx'], x['t_idx'], x['r']))
 prediction_re = [tmp[0]]
