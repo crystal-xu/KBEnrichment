@@ -1,5 +1,5 @@
 # Knowledge Base Enrichment in Conversational Domain
-Implementations for my MSc dissertation. 
+Implementations for the MSc dissertation. 
 
 # Dataset
 
@@ -9,47 +9,264 @@ Please download it [here](https://github.com/thunlp/DocRED/tree/master/data), pr
 
 #### **DialogRE**
 
-please download it [here](https://github.com/nlpdata/dialogre/tree/master/data), provided by [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056). 
+Please download it [here](https://github.com/nlpdata/dialogre/tree/master/data), provided by [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056). 
 
 #### Pre-processing
 
 DialogRE needs to be converted to the same format as DocRED.
 
+- Enter the directory:
+
+   [```cd dialogre/data_processing```](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre/data_processing)
+
+- Run the shell script:
+
+   ```source process_docred.sh```
+
+  Three documents will be generated under the directory ```../data/processed```:
+
+   ```train_annotated.json```, ```dev.json```, ```test.json```
+
+  Note: their names are the same as DocRED for convenience.
+
+- We also put the three pre-processed documents under the directory ```../data/processed```.
+
 
 
 # BiLSTM
 
-Adapted from https://github.com/thunlp/DocRED/tree/master
+**Main directory**:
 
-Dataset and code for baselines for [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127v3)
+ [```cd docred```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRED)
 
-Multiple entities in a document generally exhibit complex inter-sentence relations, and cannot be well handled by existing relation extraction (RE) methods that typically focus on extracting intra-sentence relations for single entity pairs. In order to accelerate the research on document-level RE, we introduce DocRED, a new dataset constructed from Wikipedia and Wikidata with three features: 
+**Adapted from**:
 
-+ DocRED annotates both named entities and relations, and is the largest human-annotated dataset for document-level RE from plain text.
-+ DocRED requires reading multiple sentences in a document to extract entities and infer their relations by synthesizing all information of the document.
-+ Along with the human-annotated data, we also offer large-scale distantly supervised data, which enables DocRED to be adopted for both supervised and weakly supervised scenarios.
+ https://github.com/thunlp/DocRED/tree/master
 
+**Reference paper:** 
 
+ [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127v3)
 
-Code cloned from https://github.com/hongwang600/DocRed/tree/master/
+## Requirements and Installation
+
+python3
+
+pytorch>=1.0
+
+```
+pip3 install -r requirements.txt
+```
+
+## preprocessing data
+
+**DocRED**
+
+Download metadata from [TsinghuaCloud](https://cloud.tsinghua.edu.cn/d/99e1c0805eb64736af95/) or [GoogleDrive](https://drive.google.com/drive/folders/1Ri3LIILKKBi3aBJjUVCOBpGX5PpONHRK) for baseline method and put them into ```prepro_data``` folder.
+
+**DialogRE**
+
+Replace the  ```rel2id.json``` under ```prepro_data``` with  [```dialogre/data_processing/rel2id.json```](https://github.com/crystal-xu/KBEnrichment/blob/master/dialogre/data/rel2id.json)
+
+- Run the script:
+
+```
+$ cd code
+$ python3 gen_data.py --in_path ../data --out_path prepro_data
+```
+
+## Train
+
+```
+$ cd code
+$ CUDA_VISIBLE_DEVICES=0 python3 train.py --model_name BiLSTM --save_name checkpoint_BiLSTM --train_prefix dev_train --test_prefix dev_dev
+```
+
+**Note: **change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/DocRED/code/config/Config.py#L54) to 37 for **DialogRE** 
+
+## Test
+
+```
+$ cd code
+$ CUDA_VISIBLE_DEVICES=0 python3 test.py --model_name BiLSTM --save_name checkpoint_BiLSTM --train_prefix dev_train --test_prefix dev_dev --input_theta 0.3601
+```
 
 
 
 # BERT-Embed
 
-Adapted from https://github.com/hongwang600/DocRed/tree/master
+**Main directory**:
+
+ [```cd DocRed-BERT```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRed-BERT)
+
+**Adapted from**:
+
+ https://github.com/hongwang600/DocRed/tree/master
+
+**Reference paper:**
+
+  [Fine-tune Bert for DocRED with Two-step Process](https://arxiv.org/abs/1909.11898)
+
+**Note**: Please refer to [BiLSTM](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRED) for preprocessing data, train, and test.
+
+
 
 # Sent-Model
 
-Adapted from https://github.com/hongwang600/DocRed/tree/sent_level_enc
+**Main directory**:
+
+ [```cd DocRed-BERT```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRed-BERT)
+
+**Adapted from**:
+
+ https://github.com/hongwang600/DocRed/tree/sent_level_enc
+
+**Reference paper:**  
+
+[Fine-tune Bert for DocRED with Two-step Process](https://arxiv.org/abs/1909.11898)
+
+**Note**: Please refer to [BiLSTM](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRED) for preprocessing data, train, and test.
+
+
+
+# Graph-LSR
+
+**Main directory**: [```cd LSR```](https://github.com/crystal-xu/KBEnrichment/tree/master/LSR)
+
+**Adapted from** https://github.com/nanguoshun/LSR/tree/master
+
+**Reference paper**:
+[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](https://arxiv.org/abs/2005.06312)
+
+## Requirement
+
+```
+python==3.6.7 
+torch==1.3.1 + CUDA == 9.2 1.5.1
+OR torch==1.5.1 + CUDA == 10.1
+tqdm==4.29.1
+numpy==1.15.4
+spacy==2.1.3
+networkx==2.4
+```
+
+## Data Proprocessing
+
+**DocRED**
+
+Download metadata from [TsinghuaCloud](https://cloud.tsinghua.edu.cn/d/99e1c0805eb64736af95/) or [GoogleDrive](https://drive.google.com/drive/folders/1Ri3LIILKKBi3aBJjUVCOBpGX5PpONHRK) for baseline method and put them into ```prepro_data``` folder.
+
+**DialogRE**
+
+Replace the  ```rel2id.json``` under ```prepro_data``` with  [```dialogre/data_processing/rel2id.json```](https://github.com/crystal-xu/KBEnrichment/blob/master/dialogre/data/rel2id.json)
+
+- Run the script:
+
+```
+$ cd code
+$ python3 gen_data.py 
+```
+
+## Training
+
+In order to train the model, run:
+
+```
+$ cd code
+$ python3 train.py
+```
+
+**Note: **change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/LSR/code/config/Config.py#L77) to 37 for **DialogRE** 
+
+## Test
+
+After the training process, we can test the model by:
+
+```
+python3 test.py
+```
+
+
+
+# BERT-LSR
+
+**Main directory**: [```cd LSR_BERT```](https://github.com/crystal-xu/KBEnrichment/tree/master/LSR_BERT)
+
+**Adapted from** https://github.com/nanguoshun/LSR/tree/master
+
+**Reference paper**:
+[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](
+
+## Requirement
+
+```
+python==3.6.7 
+torch==1.3.1 + CUDA == 9.2 1.5.1
+OR torch==1.5.1 + CUDA == 10.1
+tqdm==4.29.1
+numpy==1.15.4
+spacy==2.1.3
+networkx==2.4
+pytorch-transformers==1.2.0
+```
+
+## 
+
+## Data Proprocessing
+
+**DocRED**
+
+Download metadata from [TsinghuaCloud](https://cloud.tsinghua.edu.cn/d/99e1c0805eb64736af95/) or [GoogleDrive](https://drive.google.com/drive/folders/1Ri3LIILKKBi3aBJjUVCOBpGX5PpONHRK) for baseline method and put them into ```prepro_data``` folder.
+
+- Run the script
+
+```
+$ cd code
+$ python3 gen_data.py 
+```
+
+**DialogRE**
+
+Replace the  ```rel2id.json``` under ```prepro_data``` with  [```dialogre/data_processing/rel2id.json```](https://github.com/crystal-xu/KBEnrichment/blob/master/dialogre/data/rel2id.json)
+
+- Run the script
+
+```
+$ cd code
+$ python3 gen_data_bert.py 
+```
+
+## Training
+
+In order to train the model, run:
+
+```
+$ cd code
+$ python3 train.py
+```
+
+## Test
+
+After the training process, we can test the model by:
+
+```
+python3 test.py
+```
+
+
 
 # Graph-EOG
 
-Adapted from https://github.com/fenchri/edge-oriented-graph/tree/master
+**Main directory**:
 
-Adapted to the DocRED dataset
+[```cd edge-oriented-graph```](https://github.com/crystal-xu/KBEnrichment/tree/master/edge-oriented-graph)
 
-Source code for the paper "[Connecting the Dots: Document-level Relation Extraction with Edge-oriented Graphs](https://www.aclweb.org/anthology/D19-1498.pdf)" in EMNLP 2019.
+**Adapted from**:
+
+ https://github.com/fenchri/edge-oriented-graph/tree/master
+
+**Reference paper**:
+
+ [Connecting the Dots: Document-level Relation Extraction with Edge-oriented Graphs](https://www.aclweb.org/anthology/D19-1498.pdf)
 
 
 ## Environment
@@ -67,7 +284,9 @@ $ # put dev_train.json dev_dev.json dev_test.json of the two datasets in each di
 $ cd ..
 ```
 
-In order to process the datasets, they should first be transformed into the PubTator format. The run the processing scripts as follows:
+In order to process the datasets, two datasets should first be transformed into the PubTator format. 
+
+Run the processing scripts as follows:
 
 ```
 $ sh process_docred.sh #DocRED
@@ -76,13 +295,17 @@ $ sh process_dialogue.sh #DialogRE
 
 In order to get the data statistics run:
 
+- DocRED
+
 ```
-# DocRED
 python3 statistics.py --data ../data/DocRED/processed/dev_train.data
 python3 statistics.py --data ../data/DocRED/processed/dev_dev.data
 python3 statistics.py --data ../data/DocRED/processed/dev_test.data
+```
 
-# DialogRE
+- DialogRE
+
+```
 python3 statistics.py --data ../data/Dialogue/processed/dev_train.data
 python3 statistics.py --data ../data/Dialogue/processed/dev_dev.data
 python3 statistics.py --data ../data/Dialogue/processed/dev_test.data
@@ -90,221 +313,45 @@ python3 statistics.py --data ../data/Dialogue/processed/dev_test.data
 
 This will additionally generate the gold-annotation file in the same folder with suffix `.gold`.
 
+## Pre-trained Word Embeddings
 
-## Usage
+The initial model utilized pre-traine PubMed embeddings.
 
-Run the main script from training and testing as follows. Select gpu -1 for cpu mode.  
+Please download [GloVe embeddings](http://nlp.stanford.edu/data/glove.6B.zip), and put it under [```./embeds```](https://github.com/crystal-xu/KBEnrichment/tree/master/edge-oriented-graph/embeds)
 
-**DocRED/DialogRE**: Train the model on the training set and evaluate on the dev set, in order to identify the best training epoch.
-For testing, evaluate on the test set.
-
-In order to ensure the usage of early stopping criterion, use the `--early_stop` option.
-If during training early stopping is not triggered, the maximum epoch (specified in the config file) will be used.
-
-Otherwise, if you want to train up to a specific epoch, use the `--epoch epochNumber` option without early stopping.
-The maximum stopping epochs can be defined by the `--epoch` option.
-
-For example, in the DocRED dataset:
+## Train
 
 ```
 $ cd src/
-$ python3 eog.py --config ../configs/parameters_docred.yaml --train --gpu 0 --early_stop       # using early stopping
-$ python3 eog.py --config ../configs/parameters_docred.yaml --train --gpu 0 --epoch 15         # train until the 15th epoch *without* early stopping
-$ python3 eog.py --config ../configs/parameters_docred.yaml --train --gpu 0 --epoch 15 --early_stop  # set both early stop and max epoch
-
-$ python3 eog.py --config ../configs/parameters_docred.yaml --test --gpu 0
+$ # DocRED
+$ python3 eog.py --config ../configs/parameters_docred.yaml --train --gpu 0  
+$ # DialogRE
+$ python3 eog.py --config ../configs/parameters_dialogue.yaml --train --gpu 0 
 ```
 
-All necessary parameters can be stored in the yaml files inside the configs directory.
-The following parameters can be also directly given as follows:
+## Test
 
-```
-usage: eog.py [-h] --config CONFIG [--train] [--test] [--gpu GPU]
-              [--walks WALKS] [--window WINDOW] [--edges [EDGES [EDGES ...]]]
-              [--types TYPES] [--context CONTEXT] [--dist DIST] [--example]
-              [--seed SEED] [--early_stop] [--epoch EPOCH]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  --config CONFIG       Yaml parameter file
-  --train               Training mode - model is saved
-  --test                Testing mode - needs a model to load
-  --gpu GPU             GPU number
-  --walks WALKS         Number of walk iterations
-  --window WINDOW       Window for training (empty processes the whole
-                        document, 1 processes 1 sentence at a time, etc)
-  --edges [EDGES [EDGES ...]]
-                        Edge types
-  --types TYPES         Include node types (Boolean)
-  --context CONTEXT     Include MM context (Boolean)
-  --dist DIST           Include distance (Boolean)
-  --example             Show example
-  --seed SEED           Fixed random seed number
-  --early_stop          Use early stopping
-  --epoch EPOCH         Maximum training epoch
-```
+```$ python3 eog.py --config ../configs/parameters_docred.yaml --test --gpu 0```
 
 ### Post-processing
 
-In order to evaluate the results, the prediction file "test.preds" need to be converted to the same format as DocRED:
+In order to evaluate the results, the prediction file ```test.preds``` need to be converted to the same format as DocRED:
+
+- DocRED
 
 ```
 $ # DocRED
 $ mkdir ../data/DocRED 
 $ # put the test.preds and rel2id.json under the directory
 $ python3 convert2DocREDFormat --data DocRED
-$ # DialogRE
+```
+
+- DialogRE
+
+```
 $ mkdir ../data/Dialogue 
 $ # put the test.preds and rel2id.json under the directory
 $ python3 convert2DocREDFormat --data Dialogue
-```
-
-
-### Acknowledgement
-
-The initial idea and code own to the following paper:
-
-```
-@inproceedings{christopoulou2019connecting,  
-title = "Connecting the Dots: Document-level Neural Relation Extraction with Edge-oriented Graphs",  
-author = "Christopoulou, Fenia and Miwa, Makoto and Ananiadou, Sophia",  
-booktitle = "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",  
-year = "2019",  
-publisher = "Association for Computational Linguistics",  
-pages = "4927--4938"  
-}  
-```
-
-# Graph-LSR
-
-Adapted from https://github.com/nanguoshun/LSR/tree/master
-
-This repository is the PyTorch implementation of our LSR model with GloVe embeddings in ACL 2020 Paper 
-"[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](https://arxiv.org/abs/2005.06312)".
-
-## Requirement
-
-```
-python==3.6.7 
-torch==1.3.1 + CUDA == 9.2 1.5.1
-OR torch==1.5.1 + CUDA == 10.1
-tqdm==4.29.1
-numpy==1.15.4
-spacy==2.1.3
-networkx==2.4
-```
-
-## Data Proprocessing
-
-After you download the dataset, please put the files train_annotated.json, dev.json and test.json to the ./data directory, and files in pre directory to the code/prepro_data. Run:
-
-```
-# cd code
-# python3 gen_data.py 
-```
-
-## Training
-
-In order to train the model, run:
-
-```
-# cd code
-# python3 train.py
-```
-
-## Test
-
-After the training process, we can test the model by:
-
-```
-python3 test.py
-```
-
-## Related Repo
-
-Codes are adapted from the repo of the ACL2019 paper DocRED [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://github.com/thunlp/DocRED).
-
-## Citation
-
-```
-@inproceedings{nan2020lsr,
- author = {Guoshun, Nan and Zhijiang, Guo and  Ivan, Sekulić and Wei, Lu},
- booktitle = {Proc. of ACL},
- title = {Reasoning with Latent Structure Refinement for Document-Level Relation Extraction},
- year = {2020}
-}
-```
-
-
-
-# BERT-LSR
-
-It is the PyTorch implementation of the LSR model with BERT embeddings in ACL 2020 Paper 
-"[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](https://arxiv.org/abs/2005.06312)".
-
-This repository adapted the authors' implementation of LSR with GloVe embeddings: https://github.com/nanguoshun/LSR/tree/master
-
-## Requirement
-
-```
-python==3.6.7 
-torch==1.3.1 + CUDA == 9.2 1.5.1
-OR torch==1.5.1 + CUDA == 10.1
-tqdm==4.29.1
-numpy==1.15.4
-spacy==2.1.3
-networkx==2.4
-pytorch-transformers==1.2.0
-```
-
-## Dataset
-
-**DocRED**:  please download it [here](https://github.com/thunlp/DocRED/tree/master/data), which are officially provided by [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127). 
-
-**DialogRE**: please download it [here](https://github.com/nlpdata/dialogre/tree/master/data), which are officially provided by [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056). 
-
-## Data Proprocessing
-
-**DocRED**: After you download the dataset, please put the files train_annotated.json, dev.json and test.json to the ./data directory, and files in pre directory to the code/prepro_data. Run:
-
-```
-# cd code
-# python3 gen_data_bert.py 
-```
-
-**DialogRE**: After you download the dataset, please put the files train_annotated.json, dev.json and test.json to the ./data directory, and files in pre directory to the code/prepro_data. Run:
-
-```
-# cd code
-# python3 gen_data_bert.py 
-```
-
-## Training
-
-In order to train the model, run:
-
-```
-# cd code
-# python3 train.py
-```
-
-## Test
-
-After the training process, we can test the model by:
-
-```
-python3 test.py
-```
-
-## Citation
-
-```
-@inproceedings{nan2020lsr,
- author = {Guoshun, Nan and Zhijiang, Guo and  Ivan, Sekulić and Wei, Lu},
- booktitle = {Proc. of ACL},
- title = {Reasoning with Latent Structure Refinement for Document-Level Relation Extraction},
- year = {2020}
-}
 ```
 
 
@@ -312,39 +359,129 @@ python3 test.py
 DialogRE
 =====
 
-Adapted from https://github.com/nlpdata/dialogre/tree/master
+**Main directory**:
 
-This repository maintains **DialogRE**, the first human-annotated dialogue-based relation extraction dataset (**Chinese** version coming soon).
+[```cd dialogre```](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre)
 
-* Paper: https://arxiv.org/abs/2004.08056
+**Adapted from**:
 
-```
-@inproceedings{yu2020dialogue,
-  title={Dialogue-Based Relation Extraction},
-  author={Yu, Dian and Sun, Kai and Cardie, Claire and Yu, Dong},
-  booktitle={Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
-  year={2020},
-  url={https://arxiv.org/abs/2004.08056v1}
-}
-```
+https://github.com/nlpdata/dialogre/tree/master
+
+**Reference Paper**:
+
+ [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056)
+
+## **Environment**
+
+Python 3.6 and PyTorch 1.0.
+
+## Preparation
 
 * ```kb/Fandom_triples```: relational triples from [Fandom](https://friends.fandom.com/wiki/Friends_Wiki).
-
 * ```kb/matching_table.txt```: mapping from Fandom relational types to DialogRE relation types.
-
 * ```bert``` folder: a re-implementation of BERT and BERT<sub>S</sub> baselines.
-
   1. Download and unzip BERT from [here](https://github.com/google-research/bert), and set up the environment variable for BERT by 
      ```export BERT_BASE_DIR=/PATH/TO/BERT/DIR```. 
   2. Copy the dataset folder ```data``` to ```bert/```.
   3. In ```bert```, execute ```python convert_tf_checkpoint_to_pytorch.py --tf_checkpoint_path=$BERT_BASE_DIR/bert_model.ckpt --bert_config_file=$BERT_BASE_DIR/bert_config.json --pytorch_dump_path=$BERT_BASE_DIR/pytorch_model.bin```.
-  4. To run and evaluate the BERT<sub>S</sub> baseline, execute the following commands in ```bert```:
 
-  ```
-  python run_classifier.py   --task_name berts  --do_train --do_eval   --data_dir .   --vocab_file $BERT_BASE_DIR/vocab.txt   --bert_config_file $BERT_BASE_DIR/bert_config.json   --init_checkpoint $BERT_BASE_DIR/pytorch_model.bin   --max_seq_length 512   --train_batch_size 24   --learning_rate 3e-5   --num_train_epochs 20.0   --output_dir berts_f1  --gradient_accumulation_steps 2
-  rm berts_f1/model_best.pt && cp -r berts_f1 berts_f1c && python run_classifier.py   --task_name bertsf1c --do_eval   --data_dir .   --vocab_file $BERT_BASE_DIR/vocab.txt   --bert_config_file $BERT_BASE_DIR/bert_config.json   --init_checkpoint $BERT_BASE_DIR/pytorch_model.bin   --max_seq_length 512   --train_batch_size 24   --learning_rate 3e-5   --num_train_epochs 20.0   --output_dir berts_f1c  --gradient_accumulation_steps 2
-  python evaluate.py --f1dev berts_f1/logits_dev.txt --f1test berts_f1/logits_test.txt --f1cdev berts_f1c/logits_dev.txt --f1ctest berts_f1c/logits_test.txt
-  ```
+## Train
 
-  **Environment**:
-  The code has been tested with Python 3.6 and PyTorch 1.0.
+To run the BERT<sub>S</sub> baseline, execute the following commands in ```bert```:
+
+```
+$ cd bert
+
+$ python run_classifier.py   --task_name berts  --do_train --do_eval   --data_dir .   --vocab_file $BERT_BASE_DIR/vocab.txt   --bert_config_file $BERT_BASE_DIR/bert_config.json   --init_checkpoint $BERT_BASE_DIR/pytorch_model.bin   --max_seq_length 512   --train_batch_size 24   --learning_rate 3e-5   --num_train_epochs 20.0   --output_dir berts_f1  --gradient_accumulation_steps 2
+
+$ rm berts_f1/model_best.pt && cp -r berts_f1 berts_f1c && python run_classifier.py   --task_name bertsf1c --do_eval   --data_dir .   --vocab_file $BERT_BASE_DIR/vocab.txt   --bert_config_file $BERT_BASE_DIR/bert_config.json   --init_checkpoint $BERT_BASE_DIR/pytorch_model.bin   --max_seq_length 512   --train_batch_size 24   --learning_rate 3e-5   --num_train_epochs 20.0   --output_dir berts_f1c  --gradient_accumulation_steps 2
+```
+
+
+
+## Test
+
+To evaluate the BERT<sub>S</sub> baseline, execute the following commands in ```bert```:
+
+```
+$ cd bert
+$ python evaluate.py --f1dev berts_f1/logits_dev.txt --f1test berts_f1/logits_test.txt --f1cdev berts_f1c/logits_dev.txt --f1ctest berts_f1c/logits_test.txt
+```
+
+
+
+Evaluations
+=====
+
+**Main directory**:
+
+[```cd Evaluation```](https://github.com/crystal-xu/KBEnrichment/tree/master/Evaluation)
+
+Put  ```train_annotated.json```, ```dev.json```, ```test.json``` and prediction results ```dev_test_index.json``` under the directory [```code/DocRED/re_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/Evaluation/code/DocRED) or[ ```code/Dialogue/re_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/Evaluation/code/Dialogue)
+
+- F1-score versus Relation Types
+
+```
+$ cd code
+$ python3 eval_re_type.py --data DocRED|Dialogue 
+```
+
+- [**BERT<sub>S</sub>**](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre)
+
+```
+$ cd ../dialogre/bert
+$ python3 evaluate_rel_type.py 
+```
+
+- F1-score of Intra- v.s. Inter-sentential Relations
+
+```
+$ cd code
+$ python3 eval_re_intra_inter.py --data DocRED|Dialogue 
+```
+
+- F1-score versus Relation Distances
+
+```
+$ cd code
+$ python3 eval_re_dist.py --data DocRED|Dialogue
+```
+
+- Distributions of Relation Types
+
+```
+$ cd code
+$ python3 get_re_type_distri.py --data DocRED|Dialogue 
+```
+
+- Distributions of  Intra- v.s. Inter-sentential Relations
+
+```
+$ cd code
+$ python3 get_re_intra_inter_distri.py --data DocRED|Dialogue
+```
+
+- Distributions of Relation Distances
+
+```
+$ cd code
+$ python3 get_re_dist_distri.py --data DocRED|Dialogue
+```
+
+- part_of distance distributions
+
+```
+$ cd code
+$ python3 part_of_birth_distri.py 
+```
+
+- date_of_birth distance distributions
+
+```
+$ cd code
+$ python3 get_date_of_birth_distri.py 
+```
+
+
+
+# Known Issues
