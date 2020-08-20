@@ -1,5 +1,5 @@
 # Knowledge Base Enrichment in Conversational Domain
-Implementations for the MSc dissertation. 
+This repository is the implementations for my MSc dissertation. 
 
 # Dataset
 
@@ -23,13 +23,13 @@ DialogRE needs to be converted to the same format as DocRED.
 
    ```source process_docred.sh```
 
-  Three documents will be generated under the directory ```../data/processed```:
+  Three documents will be generated under the directory [```../data/processed```](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre/data/processed):
 
    ```train_annotated.json```, ```dev.json```, ```test.json```
 
   Note: their names are the same as DocRED for convenience.
 
-- We also put the three pre-processed documents under the directory ```../data/processed```.
+- We also put the three pre-processed documents under the directory [```../data/processed```](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre/data/processed).
 
 
 
@@ -61,11 +61,11 @@ pip3 install -r requirements.txt
 
 **DocRED**
 
-Download metadata from [TsinghuaCloud](https://cloud.tsinghua.edu.cn/d/99e1c0805eb64736af95/) or [GoogleDrive](https://drive.google.com/drive/folders/1Ri3LIILKKBi3aBJjUVCOBpGX5PpONHRK) for baseline method and put them into ```prepro_data``` folder.
+Download metadata from [TsinghuaCloud](https://cloud.tsinghua.edu.cn/d/99e1c0805eb64736af95/) or [GoogleDrive](https://drive.google.com/drive/folders/1Ri3LIILKKBi3aBJjUVCOBpGX5PpONHRK) for baseline method and put them into [```prepro_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRED/code/prepro_data) folder.
 
 **DialogRE**
 
-Replace the  ```rel2id.json``` under ```prepro_data``` with  [```dialogre/data_processing/rel2id.json```](https://github.com/crystal-xu/KBEnrichment/blob/master/dialogre/data/rel2id.json)
+Replace the  ```rel2id.json``` under [```prepro_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRED/code/prepro_data)  with  [```dialogre/data_processing/rel2id.json```](https://github.com/crystal-xu/KBEnrichment/blob/master/dialogre/data/rel2id.json)
 
 - Run the script:
 
@@ -194,7 +194,7 @@ python3 test.py
 **Adapted from** https://github.com/nanguoshun/LSR/tree/master
 
 **Reference paper**:
-[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](
+[Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](https://arxiv.org/abs/2005.06312)
 
 ## Requirement
 
@@ -266,7 +266,7 @@ python3 test.py
 
 **Reference paper**:
 
- [Connecting the Dots: Document-level Relation Extraction with Edge-oriented Graphs](https://www.aclweb.org/anthology/D19-1498.pdf)
+ [Connecting the Dots: Document-level Relation Extraction with Edge-oriented Graphs](https://www.aclweb.org/anthology/D19-1498/)
 
 
 ## Environment
@@ -369,7 +369,7 @@ https://github.com/nlpdata/dialogre/tree/master
 
 **Reference Paper**:
 
- [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056)
+[Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056)
 
 ## **Environment**
 
@@ -485,3 +485,45 @@ $ python3 get_date_of_birth_distri.py
 
 
 # Known Issues
+
+1. A reported bug from the authors of Graph-LSR:  https://github.com/nanguoshun/LSR/issues/9
+
+   Our current workaround:
+
+   - Graph-LSR: change the batch size from 20 to 10.
+   - BERT-LSR: change the batch size from 20 to 10; make the document number an integer times the batch size.
+
+
+
+# Acknowledgement
+
+We acknowledge that the initial ideas own to the authors of following officially published reference papers and released code.
+
+We also refer to their descriptions of their open source repositories to finish these README file.
+
+## References
+
+[1] [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127v3)
+
+[2] [Fine-tune Bert for DocRED with Two-step Process](https://arxiv.org/abs/1909.11898)
+
+[3] [Reasoning with Latent Structure Refinement for Document-Level Relation Extraction](https://arxiv.org/abs/2005.06312)
+
+[4] [Connecting the Dots: Document-level Relation Extraction with Edge-oriented Graphs](https://www.aclweb.org/anthology/D19-1498/)
+
+[5] [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056)
+
+## Open Source Repositories
+
+[1] https://github.com/thunlp/DocRED/tree/master
+
+[2] https://github.com/hongwang600/DocRed/tree/master
+
+[3] https://github.com/nanguoshun/LSR/tree/master
+
+[4] https://github.com/fenchri/edge-oriented-graph/tree/master
+
+[5] https://github.com/nlpdata/dialogre/tree/master
+
+## 
+
