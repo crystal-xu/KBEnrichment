@@ -1,0 +1,11 @@
+	Id	Counts	F1-score	Name
+[1] 	 30 	 409 	 0.4805 	 per:alternate_names
+[2] 	 1 	 137 	 0.2568 	 per:positive_impression
+[3] 	 10 	 136 	 0.3011 	 per:girl/boyfriend
+[4] 	 9 	 122 	 0.3796 	 per:friends
+[5] 	 29 	 78 	 0.5443 	 per:title
+[6] 	 16 	 58 	 0.2936 	 per:siblings
+[7] 	 2 	 56 	 0.0732 	 per:negative_impression
+[8] 	 17 	 54 	 0.2024 	 per:spouse
+[9] 	 13 	 48 	 0.3585 	 per:children
+[10] 	 15 	 48 	 0.3929 	 per:parents

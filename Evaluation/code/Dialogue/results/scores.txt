@@ -1,0 +1,4 @@
+RE_F1: 0.541211
+Evi_F1: 0.000000
+RE_ignore_annotated_F1: 0.534976
+RE_ignore_distant_F1: 0.515836

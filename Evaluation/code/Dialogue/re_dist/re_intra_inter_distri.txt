@@ -1,0 +1,5 @@
+	Counts	Precentage
+training set
+	 Intra-Sentence 		 2181 		 34.9239	 Inter-Sentence 		 4064 		 65.0761dev* set
+	 Intra-Sentence 		 722 		 35.9741	 Inter-Sentence 		 1285 		 64.0259test* set
+	 Intra-Sentence 		 659 		 34.4485	 Inter-Sentence 		 1254 		 65.5515
