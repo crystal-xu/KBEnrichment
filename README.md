@@ -29,8 +29,6 @@ DialogRE needs to be converted to the same format as DocRED.
 
   Note: their names are the same as DocRED for convenience.
 
-- We also put the three pre-processed documents under the directory [```../data/processed```](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre/data/processed).
-
 
 
 # BiLSTM
@@ -45,7 +43,7 @@ DialogRE needs to be converted to the same format as DocRED.
 
 **Reference paper:** 
 
- [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127v3)
+ [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://www.aclweb.org/anthology/P19-1074/)
 
 ## Requirements and Installation
 
@@ -81,7 +79,7 @@ $ cd code
 $ CUDA_VISIBLE_DEVICES=0 python3 train.py --model_name BiLSTM --save_name checkpoint_BiLSTM --train_prefix dev_train --test_prefix dev_dev
 ```
 
-**Note: **change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/DocRED/code/config/Config.py#L54) to 37 for **DialogRE** 
+**Note**: change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/DocRED/code/config/Config.py#L54) to 37 for **DialogRE** 
 
 ## Test
 
@@ -114,7 +112,7 @@ $ CUDA_VISIBLE_DEVICES=0 python3 test.py --model_name BiLSTM --save_name checkpo
 
 **Main directory**:
 
- [```cd DocRed-BERT```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRed-BERT)
+ [```cd DocRed-sent_level_enc```](https://github.com/crystal-xu/KBEnrichment/tree/master/DocRed-sent_level_enc)
 
 **Adapted from**:
 
@@ -175,7 +173,7 @@ $ cd code
 $ python3 train.py
 ```
 
-**Note: **change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/LSR/code/config/Config.py#L77) to 37 for **DialogRE** 
+**Note**: change the [self.relation_num](https://github.com/crystal-xu/KBEnrichment/blob/db3a845c3c4d756f58ad2e9d2a223586d3096302/LSR/code/config/Config.py#L77) to 37 for **DialogRE** 
 
 ## Test
 
@@ -275,7 +273,7 @@ python3 test.py
 
 ## Datasets & Pre-processing
 
-Download the datasets
+Download the two datasets first.
 
 ```
 $ mkdir data && cd data
@@ -284,7 +282,7 @@ $ # put dev_train.json dev_dev.json dev_test.json of the two datasets in each di
 $ cd ..
 ```
 
-In order to process the datasets, two datasets should first be transformed into the PubTator format. 
+Two datasets should first be transformed into the PubTator format. 
 
 Run the processing scripts as follows:
 
@@ -315,17 +313,23 @@ This will additionally generate the gold-annotation file in the same folder with
 
 ## Pre-trained Word Embeddings
 
-The initial model utilized pre-traine PubMed embeddings.
+The initial model utilized pre-trained PubMed embeddings.
 
 Please download [GloVe embeddings](http://nlp.stanford.edu/data/glove.6B.zip), and put it under [```./embeds```](https://github.com/crystal-xu/KBEnrichment/tree/master/edge-oriented-graph/embeds)
 
 ## Train
 
+- DocRED
+
 ```
 $ cd src/
-$ # DocRED
 $ python3 eog.py --config ../configs/parameters_docred.yaml --train --gpu 0  
-$ # DialogRE
+```
+
+- DialogRE
+
+```
+$ cd src/ 
 $ python3 eog.py --config ../configs/parameters_dialogue.yaml --train --gpu 0 
 ```
 
@@ -340,7 +344,6 @@ In order to evaluate the results, the prediction file ```test.preds``` need to b
 - DocRED
 
 ```
-$ # DocRED
 $ mkdir ../data/DocRED 
 $ # put the test.preds and rel2id.json under the directory
 $ python3 convert2DocREDFormat --data DocRED
@@ -426,7 +429,7 @@ $ cd code
 $ python3 eval_re_type.py --data DocRED|Dialogue 
 ```
 
-- [**BERT<sub>S</sub>**](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre)
+​	Specifically, to evaluate [**BERT<sub>S</sub>**](https://github.com/crystal-xu/KBEnrichment/tree/master/dialogre)
 
 ```
 $ cd ../dialogre/bert
@@ -468,15 +471,15 @@ $ cd code
 $ python3 get_re_dist_distri.py --data DocRED|Dialogue
 ```
 
--  Relation distance distributions for date_of_birth and part_of
+-  Distributions of relation distances for date_of_birth and part_of
 
 ```
 $ cd code
-$ python3 get_date_of_birth_distri.py --inputfile train_annotated.json|dev.json|test.json
+$ python3 get_dist_distri_given_re_type.py --inputfile train_annotated.json|dev.json|test.json
 --type date_of_birth|part_of
 ```
 
-- F1 score versus relation distance distribution  for date_of_birth and part_of
+- F1 score of intra- versus inter- relations  for date_of_birth and part_of
 
 ```
 $ cd code
@@ -498,7 +501,7 @@ $ python3 eval_intra_inter_given_re_type --data DocRED|Dialogue --type date_of_b
 
 # Acknowledgement
 
-We acknowledge that the initial ideas own to the authors of following officially published reference papers and released code.
+We acknowledge that the initial models and source code own to the authors of the following officially published papers and released code we referred to.
 
 We also referred to the descriptions of these open source repositories for the write-up of this README file.
 
