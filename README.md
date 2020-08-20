@@ -1,2 +1,2 @@
-# Knowledge-Base-Enrichment-in-Conversational-Domain
+# KB Enrichment in Conversational Domain
 Implementations for my MSc dissertation.
