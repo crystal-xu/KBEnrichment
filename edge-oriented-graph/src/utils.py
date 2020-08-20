@@ -46,6 +46,7 @@ def save_checkpoint(save_interval, model_folder, model, optimizer, epoch, best_s
             print("Saving checkpoint {}".format(os.path.join(model_folder, 'checkpoint_last.pt')))
 
 # Load checkpoint (by Yuwei Xu)
+# Refer to the implementations of NLU+ CW2
 def load_checkpoint(model_folder, model, optimizer):
     checkpoint_path = os.path.join(model_folder, 'checkpoint_last.pt')
     if os.path.isfile(checkpoint_path):
