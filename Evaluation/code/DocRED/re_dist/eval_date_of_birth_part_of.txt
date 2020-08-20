@@ -1,6 +1,0 @@
-	Distance	Counts	Recall	Precision	F1
-	 False 		 57 		 0.3509 		 0.0065 		 0.0128
-	 True 		 47 		 0.2128 		 0.0034 		 0.0068
----------------------------------------------
-	 Intra-Sentence 		 57 		 0.3509 		 0.0065 		 0.0128
-	 Inter-Sentence 		 47 		 0.2128 		 0.0034 		 0.0068
