@@ -1,17 +1,17 @@
 # Knowledge Base Enrichment in Conversational Domain
-This repository is the implementations for my MSc dissertation. 
+This repository is the implementations for my MSc dissertation.  We adapted several state-of-the-art document-level RE models, and conducted thorough evaluations on [DocRED](https://www.aclweb.org/anthology/P19-1074/) and [DialogRE](https://arxiv.org/abs/2004.08056). 
 
 # Dataset
 
-#### **DocRED**
+## **DocRED**
 
-Please download it [here](https://github.com/thunlp/DocRED/tree/master/data), provided by [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127). 
+Please download it [here](https://github.com/thunlp/DocRED/tree/master/data), provided by [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://www.aclweb.org/anthology/P19-1074/). 
 
-#### **DialogRE**
+## **DialogRE**
 
 Please download it [here](https://github.com/nlpdata/dialogre/tree/master/data), provided by [Dialogue-Based Relation Extraction](https://arxiv.org/abs/2004.08056). 
 
-#### Pre-processing
+## Pre-processing
 
 DialogRE needs to be converted to the same format as DocRED.
 
@@ -419,7 +419,7 @@ Evaluations
 
 Put  ```train_annotated.json```, ```dev.json```, ```test.json``` and prediction results ```dev_test_index.json``` under the directory [```code/DocRED/re_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/Evaluation/code/DocRED) or[ ```code/Dialogue/re_data```](https://github.com/crystal-xu/KBEnrichment/tree/master/Evaluation/code/Dialogue)
 
-- F1-score versus Relation Types
+- F1-score versus relation types
 
 ```
 $ cd code
@@ -433,53 +433,54 @@ $ cd ../dialogre/bert
 $ python3 evaluate_rel_type.py 
 ```
 
-- F1-score of Intra- v.s. Inter-sentential Relations
+- F1-score of intra- v.s. inter-sentential relations
 
 ```
 $ cd code
 $ python3 eval_re_intra_inter.py --data DocRED|Dialogue 
 ```
 
-- F1-score versus Relation Distances
+- F1-score versus relation distances
 
 ```
 $ cd code
 $ python3 eval_re_dist.py --data DocRED|Dialogue
 ```
 
-- Distributions of Relation Types
+- Distributions of relation types
 
 ```
 $ cd code
 $ python3 get_re_type_distri.py --data DocRED|Dialogue 
 ```
 
-- Distributions of  Intra- v.s. Inter-sentential Relations
+- Distributions of  intra- v.s. inter-sentential relations
 
 ```
 $ cd code
 $ python3 get_re_intra_inter_distri.py --data DocRED|Dialogue
 ```
 
-- Distributions of Relation Distances
+- Distributions of relation distances
 
 ```
 $ cd code
 $ python3 get_re_dist_distri.py --data DocRED|Dialogue
 ```
 
-- part_of distance distributions
+-  Relation distance distributions for date_of_birth and part_of
 
 ```
 $ cd code
-$ python3 part_of_birth_distri.py 
+$ python3 get_date_of_birth_distri.py --inputfile train_annotated.json|dev.json|test.json
+--type date_of_birth|part_of
 ```
 
-- date_of_birth distance distributions
+- F1 score versus relation distance distribution  for date_of_birth and part_of
 
 ```
 $ cd code
-$ python3 get_date_of_birth_distri.py 
+$ python3 eval_intra_inter_given_re_type --data DocRED|Dialogue --type date_of_birth|part_of 
 ```
 
 
@@ -499,11 +500,11 @@ $ python3 get_date_of_birth_distri.py
 
 We acknowledge that the initial ideas own to the authors of following officially published reference papers and released code.
 
-We also refer to their descriptions of their open source repositories to finish these README file.
+We also referred to the descriptions of these open source repositories for the write-up of this README file.
 
 ## References
 
-[1] [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://arxiv.org/abs/1906.06127v3)
+[1] [DocRED: A Large-Scale Document-Level Relation Extraction Dataset](https://www.aclweb.org/anthology/P19-1074/)
 
 [2] [Fine-tune Bert for DocRED with Two-step Process](https://arxiv.org/abs/1909.11898)
 

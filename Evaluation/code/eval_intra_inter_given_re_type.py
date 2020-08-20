@@ -5,7 +5,7 @@ Usage: F1-score versus intra- & inter- instances
 for two relation types: date_of_birth and part_of.
 
 Run the script:
-python3 eval_intra_inter_given_re_type --data DocRED|Dialogue --type 'data_of_birth'|'part_of'
+python3 eval_intra_inter_given_re_type --data DocRED|Dialogue --type date_of_birth|part_of
 
 'P569': data_of_birth
 'P361': part_of
