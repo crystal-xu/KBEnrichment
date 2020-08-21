@@ -1,3 +1,6 @@
+'''
+Adapted from: https://github.com/hongwang600/DocRed/blob/master/models/bert.py
+'''
 #from pathlib import Path
 import torch
 from torch import nn
